@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useMemo, useState } from "react";
 import type { IconType } from "react-icons";
 import { IoHeartOutline, IoHeart, IoChatbubbleOutline } from "react-icons/io5";
 import { HiOutlineSpeakerphone, HiSpeakerphone } from 'react-icons/hi';
@@ -26,9 +26,13 @@ export function GenericButton({
 	toggled?: boolean
 }) {
 
+	const handleClick = useCallback((ev: MouseEvent<HTMLButtonElement>) => {
+		ev.stopPropagation();
+		onClick();
+	}, [onClick]);
+
 	const color = useMemo(() => COLOR_MAP[type], [type]);
 	const customClass = useMemo(() => `interative-button-${type}`, [type])
-
 	return <>
 		<style>{`
 			.${customClass} {
@@ -37,7 +41,7 @@ export function GenericButton({
 			}
 		`}</style>
 		<button
-			onClick={onClick}
+			onClick={handleClick}
 			className={clsx(styles.button, customClass, toggled && styles.toggled)}>
 			<div className={styles.iconContainer}>
 				<Icon className={styles.icon} />

@@ -11,11 +11,16 @@ export default createEndpoint<{
   token: string;
 }>({
   POST: async ({ req, res, db }) => {
-    const { username, password: rawPassword } = verifyBody(
+    const {
+      username,
+      password: rawPassword,
+      name,
+    } = verifyBody(
       req,
       TObject.follow({
         username: TStandard.string,
         password: TStandard.string,
+        name: TStandard.string,
       })
     );
 
@@ -32,6 +37,7 @@ export default createEndpoint<{
         data: {
           username,
           password,
+          name,
         },
       });
 

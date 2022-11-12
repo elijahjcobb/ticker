@@ -25,12 +25,13 @@
   padding: var(--sp-4);
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 .left {
   gap: var(--sp2);
   font-size: 1.5em;
+  color: var(--bg);
+  justify-content: center;
 }
 
 .left h1 {
@@ -40,7 +41,6 @@
 
 .left p {
   font-weight: 400;
-  color: var(--acc-8);
 }
 
 .right {

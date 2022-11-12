@@ -1,6 +1,6 @@
 import { createEndpoint } from "../../../api-helpers/create-endpoint";
 import { verifyUser } from "../../../api-helpers/token";
-import { ResponseTick } from "../tick/[id]";
+import type { ResponseTick } from "./[id]";
 
 export default createEndpoint<ResponseTick[]>({
   GET: async ({ req, res, db }) => {

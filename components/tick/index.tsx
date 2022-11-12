@@ -3,7 +3,7 @@ import type { ResponseTick } from "../../pages/api/tick/[id]";
 import { CommentButton, HeartButton, RetickButton } from "../interactive-button";
 import { formatDistanceToNow } from 'date-fns'
 import styles from "./index.module.css";
-
+import { Avatar } from "../avatar";
 
 export function Tick({
 	user,
@@ -11,7 +11,7 @@ export function Tick({
 	content,
 	comment_count,
 	heart_count,
-	id
+	id,
 }: ResponseTick) {
 
 	const createdAt = useMemo(() => {
@@ -23,11 +23,12 @@ export function Tick({
 		return `${value} ago`
 	}, [created_at]);
 
-	return <div className={styles.container}>
-		<div className={styles.profile} />
+	return <div
+		className={styles.container}>
+		<Avatar name={user.name} id={user.id} />
 		<div className={styles.content}>
 			<div className={styles.top}>
-				<span className={styles.name}>{user.username}</span>
+				<span className={styles.name}>{user.name}</span>
 				<span>·</span>
 				<span>@{user.username}</span>
 				<span>·</span>

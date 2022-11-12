@@ -4,6 +4,7 @@ import { verifyUser } from "../../../api-helpers/token";
 export interface ResponseUser {
   id: string;
   username: string;
+  name: string;
 }
 
 export default createEndpoint<ResponseUser>({
@@ -12,6 +13,7 @@ export default createEndpoint<ResponseUser>({
     res.json({
       username: user.username,
       id: user.id,
+      name: user.name,
     });
   },
 });

@@ -35,18 +35,42 @@ model tick {
   content       String
   heart_count   Int       @default(0)
   comment_count Int       @default(0)
+  retick_count  Int       @default(0)
   user          user      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   comment       comment[]
   heart         heart[]
 }
 
 model user {
-  id         String    @id @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
-  created_at DateTime  @default(now()) @db.Timestamptz(6)
-  username   String    @unique
-  healthy    Boolean   @default(true)
-  password   String
-  comment    comment[]
-  heart      heart[]
-  tick       tick[]
+  id                                   String    @id @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
+  created_at                           DateTime  @default(now()) @db.Timestamptz(6)
+  username                             String    @unique
+  healthy                              Boolean   @default(true)
+  password                             String
+  name                                 String
+  follow_count                         Int       @default(0)
+  follower_count                       Int       @default(0)
+  comment                              comment[]
+  follow_follow_followed_user_idTouser follow[]  @relation("follow_followed_user_idTouser")
+  follow_follow_user_idTouser          follow[]  @relation("follow_user_idTouser")
+  heart                                heart[]
+  tick                                 tick[]
+}
+
+model retick {
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  user_id    String   @db.Uuid
+  tick_id    String   @db.Uuid
+
+  @@id([user_id, tick_id])
+}
+
+model follow {
+  created_at                         DateTime @default(now()) @db.Timestamptz(6)
+  followed_user_id                   String   @db.Uuid
+  user_id                            String   @db.Uuid
+  user_follow_followed_user_idTouser user     @relation("follow_followed_user_idTouser", fields: [followed_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_follow_user_idTouser          user     @relation("follow_user_idTouser", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([followed_user_id, user_id])
 }

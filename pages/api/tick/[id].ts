@@ -6,6 +6,7 @@ export interface ResponseTick extends tick {
   user: {
     username: string;
     id: string;
+    name: string;
   };
 }
 
@@ -14,7 +15,11 @@ export default createEndpoint<ResponseTick>({
     const tickId = req.query.id as string;
     await verifyUser(req);
     const tick = await db.tick.findUniqueOrThrow({ where: { id: tickId } });
-    const { username, id: userId } = await db.user.findUniqueOrThrow({
+    const {
+      username,
+      id: userId,
+      name,
+    } = await db.user.findUniqueOrThrow({
       where: { id: tick.user_id },
     });
     res.json({
@@ -22,6 +27,7 @@ export default createEndpoint<ResponseTick>({
       user: {
         username,
         id: userId,
+        name,
       },
     });
   },

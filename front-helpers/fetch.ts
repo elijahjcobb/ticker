@@ -19,6 +19,11 @@ export function useFetch<T, E>(url: string) {
   );
 }
 
+function baseUrl(): string {
+  if (process.env.NODE_ENV === "production") return "https://tick.network";
+  else return "http://localhost:3000";
+}
+
 export async function fetcher<T extends object>({
   url,
   method = "get",
@@ -42,8 +47,9 @@ export async function fetcher<T extends object>({
     };
   }
 
-  const res = await fetch(`http://localhost:3000/api${url}`, {
+  const res = await fetch(`${baseUrl()}/api${url}`, {
     method,
+    credentials: "same-origin",
     body: body ? JSON.stringify(body) : undefined,
     ...authHeaders,
   });

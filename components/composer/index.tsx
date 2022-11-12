@@ -4,13 +4,16 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetcher } from "../../front-helpers/fetch";
 import clsx from "clsx";
+import type { ResponseTick } from "../../pages/api/tick/[id]";
 
 export function Composer({
 	show,
-	setShow
+	setShow,
+	onCreateTick
 }: {
 	show: boolean,
-	setShow: (value: boolean) => void
+	setShow: (value: boolean) => void;
+	onCreateTick: (tick: ResponseTick) => void;
 }) {
 
 	const [value, setValue] = useState("");
@@ -19,16 +22,19 @@ export function Composer({
 
 	const handleTick = useCallback(() => {
 		setLoading(true);
-		fetcher({
+		fetcher<ResponseTick>({
 			url: "/tick",
 			method: "post",
 			body: { content: value }
-		}).then(() => {
+		}).then(res => {
 			setShow(false);
+			onCreateTick(res);
+			setLoading(false);
+			setValue("");
 		}).catch(() => {
 			setLoading(false);
 		})
-	}, [value, setShow, setLoading]);
+	}, [value, setShow, setLoading, onCreateTick]);
 
 	useEffect(() => {
 		ref.current?.focus();

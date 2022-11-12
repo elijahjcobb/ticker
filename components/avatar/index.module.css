@@ -1,0 +1,20 @@
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 0 var(--sp) var(--acc-1);
+  font-family: var(--font-title);
+  border: solid 1px var(--acc-1);
+  text-transform: uppercase;
+  color: var(--bg);
+  flex-shrink: 0;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  transition: 125ms ease-in-out;
+}
+
+.avatar:hover {
+  transform: scale(1.05) translateY(-2px);
+}
