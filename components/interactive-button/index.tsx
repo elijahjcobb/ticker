@@ -77,16 +77,15 @@ export function GenericToggleableButton({
 				body: { id }
 			});
 
-			console.log(res);
-
 			setCount(res.count);
 
 		} catch (e) {
-			alert("ERROR");
 			console.error(e)
+			setCount(initialCount);
+			setIsToggled(false);
 		}
 
-	}, [id, type]);
+	}, [id, type, initialCount]);
 
 	const handleClick = useCallback(() => {
 		setIsToggled(old => {
