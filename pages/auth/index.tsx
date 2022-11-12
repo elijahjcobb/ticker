@@ -32,7 +32,7 @@ export default function Page() {
 				username, password
 			}
 		}).then(() => {
-			router.push("/home");
+			router.push("/");
 		}).catch(err => {
 			let message = "An error occurred.";
 			if (err instanceof APIError) message = err.message;

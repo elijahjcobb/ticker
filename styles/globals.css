@@ -9,6 +9,8 @@
 :root {
   --bg: white;
   --fg: black;
+  --bg-rgb: 255, 255, 255;
+  --fg-rgb: 0, 0, 0;
   --acc-1: #fafafa;
   --acc-2: #eaeaea;
   --acc-3: #ddd;
@@ -21,9 +23,9 @@
   --pri: dodgerblue;
   --sec: #e54b4b;
   --tri: #a5b452;
-  --heart: var(--sec);
-  --retick: var(--tri);
-  --comment: var(--pri);
+  --pri-rgb: 30, 144, 255;
+  --sec-rgb: 229, 75, 75;
+  --tri-rgb: 165, 180, 82;
   --sp-4: calc(var(--sp) * 4);
   --sp-2: calc(var(--sp) / 2);
   --sp: 8px;
@@ -60,5 +62,7 @@ html {
     --acc-3: #222;
     --acc-2: #1a1a1a;
     --acc-1: #0a0a0a;
+    --fg-rgb: 255, 255, 255;
+    --bg-rgb: 0, 0, 0;
   }
 }

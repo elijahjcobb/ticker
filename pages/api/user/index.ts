@@ -1,10 +1,12 @@
 import { createEndpoint } from "../../../api-helpers/create-endpoint";
 import { verifyUser } from "../../../api-helpers/token";
 
-export default createEndpoint<{
+export interface ResponseUser {
   id: string;
   username: string;
-}>({
+}
+
+export default createEndpoint<ResponseUser>({
   GET: async ({ req, res }) => {
     const user = await verifyUser(req);
     res.json({

@@ -1,0 +1,60 @@
+.main {
+  display: flex;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  margin-top: var(--sp);
+  max-width: 480px;
+}
+
+.nav {
+  padding: var(--sp2);
+  position: sticky;
+  top: var(--sp);
+  background: var(--bg);
+  border-radius: var(--sp2);
+  box-shadow: 0 0 var(--sp2) var(--acc-2);
+}
+
+.profile {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--acc-2);
+}
+
+.navIcon {
+  flex-grow: 1;
+}
+
+.nav,
+.navIcon {
+  display: flex;
+  align-items: center;
+  gap: var(--sp2);
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+}
+
+.icon,
+.nav h1 {
+  color: var(--pri);
+}
+
+.nav h1 {
+  font-family: var(--font-title);
+  font-size: 2rem;
+}
+
+.ticks {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--sp2);
+}

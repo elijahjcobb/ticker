@@ -1,3 +1,4 @@
-export default function Page() {
-	return <div>fe</div>
-}
+import { Page, getServerSideProps } from "../components/home";
+
+export default Page;
+export { getServerSideProps };

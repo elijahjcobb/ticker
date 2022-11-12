@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp2);
+  padding: var(--sp3);
+  border: solid 2px var(--acc-1);
+  border-bottom: none;
+}
+
+.profile {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--acc-2);
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  color: var(--acc-5);
+  gap: var(--sp-2);
+}
+
+.top * {
+  display: block;
+}
+
+.name {
+  font-weight: bold;
+  color: var(--fg);
+}
+
+.buttons {
+  display: flex;
+  gap: var(--sp4);
+}

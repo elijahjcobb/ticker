@@ -23,16 +23,29 @@ export async function fetcher<T extends object>({
   url,
   method = "get",
   body,
+  token,
   throwOnHTTPError = true,
 }: {
   url: string;
+  token?: string;
   body?: object;
   method?: "post" | "get" | "delete" | "put";
   throwOnHTTPError?: boolean;
 }): Promise<T> {
-  const res = await fetch(`/api/${url}`, {
+  let authHeaders = {};
+
+  if (token) {
+    authHeaders = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+  }
+
+  const res = await fetch(`http://localhost:3000/api${url}`, {
     method,
     body: body ? JSON.stringify(body) : undefined,
+    ...authHeaders,
   });
   const json = await res.json();
   if (throwOnHTTPError && !res.ok) throw new APIError(res.status, json.error);

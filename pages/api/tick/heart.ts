@@ -29,11 +29,11 @@ export default createEndpoint({
       throw e;
     }
 
-    await db.tick.update({
+    const tick = await db.tick.update({
       where: { id },
       data: { heart_count: { increment: 1 } },
     });
 
-    res.status(200).json({ status: "Success" });
+    res.status(200).json({ count: tick.heart_count });
   },
 });
