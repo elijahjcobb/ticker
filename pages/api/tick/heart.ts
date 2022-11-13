@@ -1,12 +1,17 @@
 import { TObject, TStandard } from "@elijahjcobb/typr";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { APIError } from "../../../api-helpers/api-error";
 import { createEndpoint } from "../../../api-helpers/create-endpoint";
 import { verifyUser } from "../../../api-helpers/token";
 import { verifyBody } from "../../../api-helpers/type-check";
 
-export default createEndpoint({
+export interface ResponseHeart {
+  count: number;
+  status: boolean;
+}
+
+export default createEndpoint<ResponseHeart>({
   POST: async ({ req, res, db }) => {
+    console.log(req.body);
+
     const { id } = verifyBody(
       req,
       TObject.follow({
@@ -15,25 +20,46 @@ export default createEndpoint({
     );
     const user = await verifyUser(req);
 
-    try {
-      await db.heart.create({
-        data: {
+    const { tick, hasLikedTick } = await db.$transaction(async (tx) => {
+      const heartCount = await tx.heart.count({
+        where: {
           tick_id: id,
           user_id: user.id,
         },
       });
-    } catch (e) {
-      if (e instanceof PrismaClientKnownRequestError && e.code === "P2002") {
-        throw new APIError(403, "You have already hearted this tick.");
-      }
-      throw e;
-    }
+      const hasLikedTick = heartCount > 0;
+      const delta = hasLikedTick ? -1 : 1;
 
-    const tick = await db.tick.update({
-      where: { id },
-      data: { heart_count: { increment: 1 } },
+      let tick = await tx.tick.update({
+        where: { id },
+        data: { heart_count: { increment: delta } },
+      });
+
+      if (tick.heart_count < 0) {
+        tick = await tx.tick.update({
+          where: { id },
+          data: { heart_count: 0 },
+        });
+      }
+
+      if (hasLikedTick) {
+        await tx.heart.deleteMany({
+          where: {
+            tick_id: id,
+            user_id: user.id,
+          },
+        });
+      } else {
+        await tx.heart.create({
+          data: {
+            tick_id: id,
+            user_id: user.id,
+          },
+        });
+      }
+      return { tick, hasLikedTick };
     });
 
-    res.status(200).json({ count: tick.heart_count });
+    res.status(200).json({ count: tick.heart_count, status: !hasLikedTick });
   },
 });

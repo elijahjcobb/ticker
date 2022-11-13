@@ -4,7 +4,7 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetcher } from "../../front-helpers/fetch";
 import clsx from "clsx";
-import type { ResponseTick } from "../../pages/api/tick/[id]";
+import type { FeedItem } from "../../pages/api/user/feed";
 
 export function Composer({
 	show,
@@ -13,7 +13,7 @@ export function Composer({
 }: {
 	show: boolean,
 	setShow: (value: boolean) => void;
-	onCreateTick: (tick: ResponseTick) => void;
+	onCreateTick: (tick: FeedItem) => void;
 }) {
 
 	const [value, setValue] = useState("");
@@ -22,7 +22,7 @@ export function Composer({
 
 	const handleTick = useCallback(() => {
 		setLoading(true);
-		fetcher<ResponseTick>({
+		fetcher<FeedItem>({
 			url: "/tick",
 			method: "post",
 			body: { content: value }

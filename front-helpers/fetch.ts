@@ -47,13 +47,20 @@ export async function fetcher<T extends object>({
     };
   }
 
-  const res = await fetch(`${baseUrl()}/api${url}`, {
+  const fullUrl = `${baseUrl()}/api${url}`;
+  const res = await fetch(fullUrl, {
     method,
     credentials: "same-origin",
     body: body ? JSON.stringify(body) : undefined,
     ...authHeaders,
   });
-  const json = await res.json();
+  const text = await res.text();
+  const json = JSON.parse(text);
+  console.log(
+    `${method.toUpperCase()} ${fullUrl}: (${res.status}) ${
+      text.length
+    } bytes -\n${text}`
+  );
   if (throwOnHTTPError && !res.ok) throw new APIError(res.status, json.error);
   return json;
 }

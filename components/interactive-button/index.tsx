@@ -5,6 +5,9 @@ import { IoHeartOutline, IoHeart, IoChatbubbleOutline } from "react-icons/io5";
 import { HiOutlineSpeakerphone, HiSpeakerphone } from 'react-icons/hi';
 import styles from "./index.module.css";
 import { fetcher } from "../../front-helpers/fetch";
+import type { ResponseHeart } from "../../pages/api/tick/heart";
+import { useDebounce } from "../../front-helpers/debounce";
+import { useDependencyEffect } from "../../front-helpers/use-dependency-effect";
 
 const COLOR_MAP = {
 	heart: 'sec',
@@ -17,13 +20,15 @@ export function GenericButton({
 	icon: Icon,
 	onClick,
 	count,
-	toggled = false
+	toggled = false,
+	disabled = false
 }: {
 	type: keyof typeof COLOR_MAP,
 	icon: IconType,
 	onClick: () => void;
 	count: number;
-	toggled?: boolean
+	toggled?: boolean;
+	disabled?: boolean
 }) {
 
 	const handleClick = useCallback((ev: MouseEvent<HTMLButtonElement>) => {
@@ -41,6 +46,7 @@ export function GenericButton({
 			}
 		`}</style>
 		<button
+			disabled={disabled}
 			onClick={handleClick}
 			className={clsx(styles.button, customClass, toggled && styles.toggled)}>
 			<div className={styles.iconContainer}>
@@ -57,7 +63,8 @@ export function GenericToggleableButton({
 	icon,
 	activeIcon = icon,
 	id,
-	initialCount
+	initialCount,
+	initialStatus
 }: {
 	type: keyof typeof COLOR_MAP,
 	icon: IconType,
@@ -66,35 +73,27 @@ export function GenericToggleableButton({
 } & Props) {
 
 	const [count, setCount] = useState(initialCount);
-	const [isToggled, setIsToggled] = useState(false);
+	const [isToggled, setIsToggled] = useState(initialStatus);
+	const debouncedToggle = useDebounce(isToggled);
 	const Icon = useMemo(() => isToggled ? activeIcon : icon, [isToggled, icon, activeIcon]);
 
-	const handleApiCall = useCallback(async () => {
-		try {
-			const res = await fetcher<{ count: number }>({
-				url: `/tick/${type}`,
-				method: "post",
-				body: { id }
-			});
-
+	useDependencyEffect(() => {
+		fetcher<ResponseHeart>({
+			url: `/tick/${type}`,
+			method: "post",
+			body: { id }
+		}).then(res => {
 			setCount(res.count);
-
-		} catch (e) {
+		}).catch(e => {
 			console.error(e)
 			setCount(initialCount);
-			setIsToggled(false);
-		}
+		});
+	}, [debouncedToggle]);
 
-	}, [id, type, initialCount]);
 
 	const handleClick = useCallback(() => {
-		setIsToggled(old => {
-			const delta = old ? -1 : 1;
-			setCount(v => v + delta);
-			handleApiCall();
-			return !old
-		});
-	}, [handleApiCall]);
+		setIsToggled(v => !v);
+	}, []);
 
 	return <GenericButton
 		onClick={handleClick}
@@ -107,6 +106,7 @@ export function GenericToggleableButton({
 
 interface Props {
 	initialCount: number;
+	initialStatus: boolean;
 	id: string;
 	type: 'retick' | "heart";
 }

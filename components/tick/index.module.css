@@ -1,12 +1,37 @@
 .container {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sp2);
   padding: var(--sp3);
   border: solid 2px var(--acc-1);
   border-bottom: none;
   text-decoration: none;
   transition: 125ms ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+}
+
+.event {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--acc-5);
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.event * {
+  display: block;
+}
+
+.eventIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: var(--sp);
+}
+
+.tick {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp2);
 }
 
 .container:hover {
@@ -27,6 +52,10 @@
   flex-direction: column;
   gap: var(--sp);
   color: var(--fg);
+}
+
+.content p {
+  max-width: 100%;
 }
 
 .top {

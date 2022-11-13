@@ -10,21 +10,22 @@ import { ComposeButton } from "../composer/button";
 import { useCallback, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Avatar } from "../avatar";
+import type { FeedItem } from "../../pages/api/user/feed";
 
 interface Props {
-	ticks: ResponseTick[];
+	feed: FeedItem[];
 	user: ResponseUser;
 }
 
-export function Page({ ticks: initialTicks, user }: Props) {
+export function Page({ feed: initialFeed, user }: Props) {
 
 	const [showModal, setShowModal] = useState(false);
-	const [ticks, setTicks] = useState<ResponseTick[]>(initialTicks);
+	const [feed, setFeed] = useState<FeedItem[]>(initialFeed);
 	const [parent] = useAutoAnimate<HTMLDivElement>();
 
-	const handleAddTick = useCallback((tick: ResponseTick) => {
-		setTicks(v => [
-			tick,
+	const handleAddTick = useCallback((feedItem: FeedItem) => {
+		setFeed(v => [
+			feedItem,
 			...v
 		]);
 		window.scrollTo({ top: 0 });
@@ -40,7 +41,7 @@ export function Page({ ticks: initialTicks, user }: Props) {
 				<Avatar name={user.name} id={user.id} size={64} />
 			</nav>
 			<div className={styles.ticks} ref={parent}>
-				{ticks.map(tick => <Tick {...tick} key={tick.id} />)}
+				{feed.map(feedItem => <Tick {...feedItem} key={feedItem.key} />)}
 			</div>
 		</div>
 		<Composer onCreateTick={handleAddTick} show={showModal} setShow={setShowModal} />
@@ -53,7 +54,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async context => {
 
 	const token = context.req.cookies.token;
 
-	const ticks = await fetcher<ResponseTick[]>({
+	const feed = await fetcher<FeedItem[]>({
 		url: "/user/feed",
 		token
 	});
@@ -65,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async context => {
 
 	return {
 		props: {
-			ticks,
+			feed,
 			user
 		}
 	}
