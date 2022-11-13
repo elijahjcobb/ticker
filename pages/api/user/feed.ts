@@ -134,7 +134,7 @@ LIMIT  300;`)) as RawRow[];
       feed.map((raw) => ({
         key: generateKey({
           userId: raw.user_id,
-          tickId: raw.id,
+          tickId: raw.tick_id,
           tickUserId: raw.tick_user_id,
           type: raw.type,
         }),

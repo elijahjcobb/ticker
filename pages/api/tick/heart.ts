@@ -10,8 +10,6 @@ export interface ResponseHeart {
 
 export default createEndpoint<ResponseHeart>({
   POST: async ({ req, res, db }) => {
-    console.log(req.body);
-
     const { id } = verifyBody(
       req,
       TObject.follow({
