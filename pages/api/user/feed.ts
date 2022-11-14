@@ -77,22 +77,6 @@ FROM   (SELECT 'retick'       AS type,
                retick.user_id
         FROM   public.retick retick
         UNION ALL
-        SELECT 'heart'       AS type,
-               NULL          AS comment_content,
-               NULL          AS comment_id,
-               heart.tick_id AS tick_id,
-               heart.created_at,
-               heart.user_id
-        FROM   public.heart heart
-        UNION ALL
-        SELECT 'comment'       AS type,
-               content         AS comment_content,
-               CAST (comment.id AS TEXT) AS comment_id,
-               comment.tick_id AS tick_id,
-               comment.created_at,
-               comment.user_id
-        FROM   public.comment comment
-        UNION ALL
         SELECT 'tick'  AS type,
                NULL    AS comment_content,
                NULL    AS comment_id,
