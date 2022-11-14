@@ -47,13 +47,13 @@ export function Composer({
 			<div onClick={(ev) => ev.stopPropagation()} className={styles.modal}>
 				<textarea
 					ref={ref}
-					placeholder="What's happening?"
+					placeholder="What's going on in your neck of the woods?"
 					className={styles.field}
 					value={value}
 					onChange={ev => setValue(ev.target.value)}
 				/>
 				<Button
-					value="Tick"
+					value="stow acorn"
 					icon={RiSendPlaneFill}
 					hoverIcon={RiSendPlaneFill}
 					onClick={handleTick}

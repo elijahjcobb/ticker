@@ -20,7 +20,7 @@ export function useFetch<T, E>(url: string) {
 }
 
 function baseUrl(): string {
-  if (process.env.NODE_ENV === "production") return "https://tick.network";
+  if (process.env.NODE_ENV === "production") return "https://acorn.social";
   else return "http://localhost:3000";
 }
 

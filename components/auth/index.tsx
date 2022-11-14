@@ -3,6 +3,7 @@ import { PropsWithChildren, useCallback, useMemo } from "react";
 import { Button } from "../../components/button";
 import { GoSquirrel } from "react-icons/go";
 import { useRouter } from "next/router";
+import { AcornIcon } from "../icons/icon";
 
 export function AuthPage({
 	children,
@@ -27,8 +28,8 @@ export function AuthPage({
 
 	return <div className={styles.container}>
 		<div className={styles.left}>
-			<GoSquirrel size={64} />
-			<h1>ticker</h1>
+			<AcornIcon size={64} />
+			<h1>acorn</h1>
 			<p>the web&apos;s town square</p>
 		</div>
 		<div className={styles.right}>

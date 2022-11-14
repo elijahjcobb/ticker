@@ -11,6 +11,7 @@ import { useCallback, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Avatar } from "../avatar";
 import type { FeedItem } from "../../pages/api/user/feed";
+import { AcornIcon } from "../icons/icon";
 
 interface Props {
 	feed: FeedItem[];
@@ -35,8 +36,8 @@ export function Page({ feed: initialFeed, user }: Props) {
 		<div className={styles.container}>
 			<nav className={styles.nav}>
 				<div className={styles.navIcon}>
-					<GoSquirrel className={styles.icon} />
-					<h1>ticker</h1>
+					<AcornIcon />
+					<h1>acorn</h1>
 				</div>
 				<Avatar name={user.name} id={user.id} size={64} />
 			</nav>

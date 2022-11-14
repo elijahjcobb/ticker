@@ -39,7 +39,7 @@ export function Tick({
 			case "comment":
 				return "commented on";
 			case "retick":
-				return "reticked";
+				return "shared";
 			case "heart":
 				return "hearted";
 			default:
@@ -63,7 +63,7 @@ export function Tick({
 			<EventIcon className={styles.eventIcon} />
 			<span>@{event.user.username}</span>
 			<span>{eventMessage}</span>
-			<span>@{tick.user.username}&apos;s tick</span>
+			<span>@{tick.user.username}&apos;s nut</span>
 			<span>{eventDate}</span>
 		</div>}
 		<div

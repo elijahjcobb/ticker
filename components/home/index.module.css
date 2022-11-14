@@ -52,6 +52,7 @@
 .nav h1 {
   font-family: var(--font-title);
   font-size: 2rem;
+  color: var(--pri);
 }
 
 .ticks {

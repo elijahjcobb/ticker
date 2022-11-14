@@ -20,12 +20,16 @@
   --acc-7: #222;
   --acc-8: #1a1a1a;
   --acc-9: #0a0a0a;
-  --pri: dodgerblue;
+  --pri: var(--acorn-3);
   --sec: #e54b4b;
   --tri: #a5b452;
-  --pri-rgb: 30, 144, 255;
+  --pri-rgb: 224, 155, 45;
   --sec-rgb: 229, 75, 75;
   --tri-rgb: 165, 180, 82;
+  --accorn-1: #995c0d;
+  --acorn-2: #b27214;
+  --acorn-3: #e09b2d;
+  --acorn-4: #f7b239;
   --sp-4: calc(var(--sp) * 4);
   --sp-2: calc(var(--sp) / 2);
   --sp: 8px;

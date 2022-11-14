@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { MouseEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { MouseEvent, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
 import type { IconType } from "react-icons";
 import { IoHeartOutline, IoHeart, IoChatbubbleOutline } from "react-icons/io5";
 import { HiOutlineSpeakerphone, HiSpeakerphone } from 'react-icons/hi';
@@ -8,28 +8,28 @@ import { fetcher } from "../../front-helpers/fetch";
 import type { ResponseHeart } from "../../pages/api/tick/heart";
 import { useDebounce } from "../../front-helpers/debounce";
 import { useDependencyEffect } from "../../front-helpers/use-dependency-effect";
+import { AcornIcon } from "../icons/icon";
 
 const COLOR_MAP = {
-	heart: 'sec',
+	heart: 'pri',
 	comment: 'pri',
 	retick: 'tri'
 }
 
 export function GenericButton({
 	type,
-	icon: Icon,
 	onClick,
 	count,
 	toggled = false,
-	disabled = false
-}: {
+	disabled = false,
+	children
+}: PropsWithChildren<{
 	type: keyof typeof COLOR_MAP,
-	icon: IconType,
 	onClick: () => void;
 	count: number;
 	toggled?: boolean;
 	disabled?: boolean
-}) {
+}>) {
 
 	const handleClick = useCallback((ev: MouseEvent<HTMLButtonElement>) => {
 		ev.stopPropagation();
@@ -50,7 +50,7 @@ export function GenericButton({
 			onClick={handleClick}
 			className={clsx(styles.button, customClass, toggled && styles.toggled)}>
 			<div className={styles.iconContainer}>
-				<Icon className={styles.icon} />
+				{children}
 			</div>
 			<span>{count}</span>
 		</button>
@@ -64,11 +64,13 @@ export function GenericToggleableButton({
 	activeIcon = icon,
 	id,
 	initialCount,
-	initialStatus
+	initialStatus,
+	useAcorn = false,
 }: {
 	type: keyof typeof COLOR_MAP,
 	icon: IconType,
-	activeIcon?: IconType
+	activeIcon?: IconType,
+	useAcorn?: boolean;
 	id: string,
 } & Props) {
 
@@ -98,10 +100,11 @@ export function GenericToggleableButton({
 	return <GenericButton
 		onClick={handleClick}
 		count={count}
-		icon={Icon}
 		type={type}
 		toggled={isToggled}
-	/>
+	>
+		{useAcorn ? (<AcornIcon size={22} enabled={isToggled} />) : (<Icon size={22} />)}
+	</GenericButton>
 }
 
 interface Props {
@@ -115,6 +118,7 @@ export function HeartButton(props: Props) {
 	return <GenericToggleableButton
 		icon={IoHeartOutline}
 		activeIcon={IoHeart}
+		useAcorn
 		{...props}
 	/>
 }
@@ -127,11 +131,12 @@ export function CommentButton({
 	count: number;
 }) {
 	return <GenericButton
-		icon={IoChatbubbleOutline}
 		type="comment"
 		onClick={onClick}
 		count={count}
-	/>
+	>
+		<IoChatbubbleOutline size={22} />
+	</GenericButton>
 }
 
 export function RetickButton(props: Props) {
