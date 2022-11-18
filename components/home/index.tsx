@@ -1,10 +1,8 @@
 import { GetServerSideProps } from "next"
 import { fetcher } from "../../front-helpers/fetch";
-import { ResponseTick } from "../../pages/api/tick/[id]";
 import { ResponseUser } from "../../pages/api/user";
-import { GoSquirrel } from "react-icons/go";
 import styles from "./index.module.css";
-import { Tick } from "../tick";
+import { Tick } from "../nut";
 import { Composer } from "../composer";
 import { ComposeButton } from "../composer/button";
 import { useCallback, useState } from "react";

@@ -1,8 +1,8 @@
 export function generateKey(data: {
-  tickId: string;
+  nutId: string;
   userId: string;
-  tickUserId: string;
+  nutUserId: string;
   type: string;
 }): string {
-  return `${data.tickId}:${data.userId}:${data.tickUserId}:${data.type}`;
+  return `${data.nutId}:${data.userId}:${data.nutUserId}:${data.type}`;
 }

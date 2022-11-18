@@ -1,7 +1,6 @@
 import styles from "./index.module.css";
 import { PropsWithChildren, useCallback, useMemo } from "react";
 import { Button } from "../../components/button";
-import { GoSquirrel } from "react-icons/go";
 import { useRouter } from "next/router";
 import { AcornIcon } from "../icons/icon";
 

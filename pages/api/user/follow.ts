@@ -29,7 +29,7 @@ export default createEndpoint({
 
     await db.user.update({
       where: { id: followedUserId },
-      data: { follow_count: { increment: 1 } },
+      data: { follower_count: { increment: 1 } },
     });
 
     res.status(200).json({});

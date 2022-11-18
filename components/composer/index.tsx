@@ -23,7 +23,7 @@ export function Composer({
 	const handleTick = useCallback(() => {
 		setLoading(true);
 		fetcher<FeedItem>({
-			url: "/tick",
+			url: "/nut",
 			method: "post",
 			body: { content: value }
 		}).then(res => {

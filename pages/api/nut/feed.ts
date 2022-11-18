@@ -5,7 +5,7 @@ import type { ResponseTick } from "./[id]";
 export default createEndpoint<ResponseTick[]>({
   GET: async ({ req, res, db }) => {
     await verifyUser(req);
-    const ticks = await db.tick.findMany({
+    const ticks = await db.nut.findMany({
       take: 100,
       orderBy: [
         {

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { HeartButton, RetickButton } from "../interactive-button";
+import { LikeButton, ShareButton } from "../interactive-button";
 import { formatDistanceToNow } from 'date-fns'
 import styles from "./index.module.css";
 import { Avatar } from "../avatar";
@@ -17,19 +17,19 @@ function formatDateString(dateString: string): string {
 }
 
 export function Tick({
-	tick,
+	nut,
 	event
 }: FeedItem) {
 
 	const { user,
 		createdAt: createdAtRaw,
 		content,
-		retickCount,
-		heartCount,
-		hearted,
-		reticked,
+		shareCount,
+		likeCount,
+		liked,
+		shared,
 		id
-	} = tick;
+	} = nut;
 
 	const createdAt = useMemo(() => formatDateString(createdAtRaw), [createdAtRaw])
 	const eventDate = useMemo(() => formatDateString(event.createdAt), [event.createdAt]);
@@ -38,9 +38,9 @@ export function Tick({
 		switch (event.type) {
 			case "comment":
 				return "commented on";
-			case "retick":
+			case "share":
 				return "shared";
-			case "heart":
+			case "like":
 				return "hearted";
 			default:
 				return "";
@@ -51,7 +51,7 @@ export function Tick({
 		switch (event.type) {
 			case "comment":
 				return IoChatbubbleOutline;
-			case "retick":
+			case "share":
 				return HiOutlineSpeakerphone;
 			default:
 				return IoHeartOutline;
@@ -59,11 +59,11 @@ export function Tick({
 	}, [event.type]);
 
 	return <div className={styles.container}>
-		{event.type === 'tick' ? null : <div className={styles.event}>
+		{event.type === 'nut' ? null : <div className={styles.event}>
 			<EventIcon className={styles.eventIcon} />
 			<span>@{event.user.username}</span>
 			<span>{eventMessage}</span>
-			<span>@{tick.user.username}&apos;s nut</span>
+			<span>@{nut.user.username}&apos;s nut</span>
 			<span>{eventDate}</span>
 		</div>}
 		<div
@@ -79,9 +79,8 @@ export function Tick({
 				</div>
 				<p>{content}</p>
 				<div className={styles.buttons}>
-					<HeartButton id={id} type='heart' initialStatus={hearted} initialCount={heartCount} />
-					{/* <CommentButton onClick={() => alert('comment')} count={comment_count} /> */}
-					<RetickButton id={id} type='retick' initialStatus={reticked} initialCount={retickCount} />
+					<LikeButton id={id} type='like' initialStatus={liked} initialCount={likeCount} />
+					<ShareButton id={id} type='share' initialStatus={shared} initialCount={shareCount} />
 				</div>
 			</div>
 		</div>

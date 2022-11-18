@@ -2,12 +2,12 @@ import { createEndpoint } from "../../../api-helpers/create-endpoint";
 import { generateKey } from "../../../api-helpers/generate-key";
 import { verifyUser } from "../../../api-helpers/token";
 
-type Type = "tick" | "comment" | "retick" | "heart";
+type Type = "nut" | "comment" | "share" | "like";
 export interface RawRow {
   type: Type;
   comment_content: null | string;
   comment_id: null | string;
-  tick_id: string;
+  nut_id: string;
   created_at: Date;
   id: string;
   user_id: string;
@@ -15,19 +15,19 @@ export interface RawRow {
   user_username: string;
   user_follow_count: number;
   user_follower_count: number;
-  tick_content: string;
-  tick_heart_count: number;
-  tick_comment_count: number;
-  tick_retick_count: number;
-  tick_updated_at: Date;
-  tick_user_id: string;
-  tick_created_at: Date;
-  tick_user_follow_count: number;
-  tick_user_follower_count: number;
-  tick_user_username: string;
-  tick_user_name: string;
-  has_hearted: null | number;
-  has_reticked: null | number;
+  nut_content: string;
+  nut_like_count: number;
+  nut_comment_count: number;
+  nut_share_count: number;
+  nut_updated_at: Date;
+  nut_user_id: string;
+  nut_created_at: Date;
+  nut_user_follow_count: number;
+  nut_user_follower_count: number;
+  nut_user_username: string;
+  nut_user_name: string;
+  has_liked: null | number;
+  has_shared: null | number;
 }
 
 export interface FeedItem {
@@ -45,16 +45,16 @@ export interface FeedItem {
       followerCount: number;
     };
   };
-  tick: {
+  nut: {
     id: string;
     content: string;
-    heartCount: number;
-    retickCount: number;
+    likeCount: number;
+    shareCount: number;
     commentCount: number;
     createdAt: string;
     updatedAt: string;
-    hearted: boolean;
-    reticked: boolean;
+    liked: boolean;
+    shared: boolean;
     user: {
       id: string;
       name: string;
@@ -69,21 +69,21 @@ export default createEndpoint<FeedItem[]>({
   GET: async ({ req, res, db }) => {
     const user = await verifyUser(req);
     const feed = (await db.$queryRawUnsafe(`SELECT *
-FROM   (SELECT 'retick'       AS type,
+FROM   (SELECT 'share'       AS type,
                NULL           AS comment_content,
                NULL           AS comment_id,
-               retick.tick_id AS tick_id,
-               retick.created_at,
-               retick.user_id
-        FROM   public.retick retick
+               share.nut_id AS nut_id,
+               share.created_at,
+               share.user_id
+        FROM   public.share share
         UNION ALL
-        SELECT 'tick'  AS type,
+        SELECT 'nut'  AS type,
                NULL    AS comment_content,
                NULL    AS comment_id,
-               tick.id AS tick_id,
-               tick.created_at,
-               tick.user_id
-        FROM   public.tick tick) raw_data
+               nut.id AS nut_id,
+               nut.created_at,
+               nut.user_id
+        FROM   public.nut nut) raw_data
        JOIN (SELECT id             AS user_id,
                     name           AS user_name,
                     username       AS user_username,
@@ -91,44 +91,42 @@ FROM   (SELECT 'retick'       AS type,
                     follower_count AS user_follower_count
              FROM   public.user) u
          ON raw_data.user_id = u.user_id
-       JOIN (SELECT id       AS tick_id,
-                    content       AS tick_content,
-                    heart_count   AS tick_heart_count,
-                    comment_count AS tick_comment_count,
-                    retick_count  AS tick_retick_count,
-                    updated_at    AS tick_updated_at,
-                    user_id       AS tick_user_id,
-                    created_at    AS tick_created_at
-             FROM   public.tick) AS tick
-         ON tick.tick_id = raw_data.tick_id
+       JOIN (SELECT id       AS nut_id,
+                    content       AS nut_content,
+                    like_count   AS nut_like_count,
+                    comment_count AS nut_comment_count,
+                    share_count  AS nut_share_count,
+                    updated_at    AS nut_updated_at,
+                    user_id       AS nut_user_id,
+                    created_at    AS nut_created_at
+             FROM   public.nut) AS nut
+         ON nut.nut_id = raw_data.nut_id
        JOIN (SELECT id,
-                    follow_count   AS tick_user_follow_count,
-                    follower_count AS tick_user_follower_count,
-                    username       AS tick_user_username,
-                    name           AS tick_user_name
-             FROM   public.user) tick_u
-         ON tick_u.id = tick.tick_user_id
-       left JOIN (select count(*) as has_hearted, tick_id as h_id from public.heart where public.heart.user_id='${user.id}' GROUP BY tick_id) heart_status
-         ON heart_status.h_id=raw_data.tick_id
-       left JOIN (select count(*) as has_reticked, tick_id as rt_id from public.retick where public.retick.user_id='${user.id}' GROUP BY tick_id) retick_status
-         ON retick_status.rt_id=raw_data.tick_id
+                    follow_count   AS nut_user_follow_count,
+                    follower_count AS nut_user_follower_count,
+                    username       AS nut_user_username,
+                    name           AS nut_user_name
+             FROM   public.user) nut_u
+         ON nut_u.id = nut.nut_user_id
+       left JOIN (select count(*) as has_liked, nut_id as h_id from public.like where public.like.user_id='${user.id}' GROUP BY nut_id) like_status
+         ON like_status.h_id=raw_data.nut_id
+       left JOIN (select count(*) as has_shared, nut_id as rt_id from public.share where public.share.user_id='${user.id}' GROUP BY nut_id) share_status
+         ON share_status.rt_id=raw_data.nut_id
 ORDER  BY created_at DESC
 LIMIT  300;`)) as RawRow[];
     res.json(
       feed.map((raw) => ({
         key: generateKey({
           userId: raw.user_id,
-          tickId: raw.tick_id,
-          tickUserId: raw.tick_user_id,
+          nutId: raw.nut_id,
+          nutUserId: raw.nut_user_id,
           type: raw.type,
         }),
         event: {
           type: raw.type,
           id:
             raw.comment_id ??
-            (raw.type === "tick"
-              ? raw.tick_id
-              : `${raw.tick_id}:${raw.user_id}`),
+            (raw.type === "nut" ? raw.nut_id : `${raw.nut_id}:${raw.user_id}`),
           content: raw.comment_content,
           createdAt: raw.created_at.toUTCString(),
           user: {
@@ -139,22 +137,22 @@ LIMIT  300;`)) as RawRow[];
             followerCount: raw.user_follower_count,
           },
         },
-        tick: {
-          id: raw.tick_id,
-          content: raw.tick_content,
-          heartCount: raw.tick_heart_count,
-          retickCount: raw.tick_retick_count,
-          commentCount: raw.tick_comment_count,
-          hearted: (raw.has_hearted ?? 0) > 0,
-          reticked: (raw.has_reticked ?? 0) > 0,
-          createdAt: raw.tick_created_at.toUTCString(),
-          updatedAt: raw.tick_updated_at.toUTCString(),
+        nut: {
+          id: raw.nut_id,
+          content: raw.nut_content,
+          likeCount: raw.nut_like_count,
+          shareCount: raw.nut_share_count,
+          commentCount: raw.nut_comment_count,
+          liked: (raw.has_liked ?? 0) > 0,
+          shared: (raw.has_shared ?? 0) > 0,
+          createdAt: raw.nut_created_at.toUTCString(),
+          updatedAt: raw.nut_updated_at.toUTCString(),
           user: {
-            id: raw.tick_user_id,
-            name: raw.tick_user_name,
-            username: raw.tick_user_username,
-            followCount: raw.tick_user_follow_count,
-            followerCount: raw.tick_user_follower_count,
+            id: raw.nut_user_id,
+            name: raw.nut_user_name,
+            username: raw.nut_user_username,
+            followCount: raw.nut_user_follow_count,
+            followerCount: raw.nut_user_follower_count,
           },
         },
       }))

@@ -1,23 +1,4 @@
-import useSWR from "swr";
 import { APIError } from "../api-helpers/api-error";
-
-export function useFetch<T, E>(url: string) {
-  return useSWR<T, E>(
-    url,
-    async (url: string, method: "post" | "get" | "delete" | "put") => {
-      const res = await fetch(url, {
-        method,
-      });
-      const json = await res.json();
-
-      if (!res.ok) {
-        throw new APIError(res.status, json.error);
-      }
-
-      return json;
-    }
-  );
-}
 
 function baseUrl(): string {
   if (process.env.NODE_ENV === "production") return "https://acorn.social";

@@ -3,12 +3,12 @@ import { createEndpoint } from "../../../api-helpers/create-endpoint";
 import { verifyUser } from "../../../api-helpers/token";
 import { verifyBody } from "../../../api-helpers/type-check";
 
-export interface ResponseHeart {
+export interface ResponseLike {
   count: number;
   status: boolean;
 }
 
-export default createEndpoint<ResponseHeart>({
+export default createEndpoint<ResponseLike>({
   POST: async ({ req, res, db }) => {
     const { id } = verifyBody(
       req,
@@ -18,46 +18,49 @@ export default createEndpoint<ResponseHeart>({
     );
     const user = await verifyUser(req);
 
-    const { tick, hasLikedTick } = await db.$transaction(async (tx) => {
-      const heartCount = await tx.heart.count({
+    const { nut, hasLikedNut } = await db.$transaction(async (tx) => {
+      const likeCount = await tx.like.count({
         where: {
-          tick_id: id,
+          nut_id: id,
           user_id: user.id,
         },
       });
-      const hasLikedTick = heartCount > 0;
-      const delta = hasLikedTick ? -1 : 1;
 
-      let tick = await tx.tick.update({
+      console.log({ id, userId: user.id });
+
+      const hasLikedNut = likeCount > 0;
+      const delta = hasLikedNut ? -1 : 1;
+
+      let nut = await tx.nut.update({
         where: { id },
-        data: { heart_count: { increment: delta } },
+        data: { like_count: { increment: delta } },
       });
 
-      if (tick.heart_count < 0) {
-        tick = await tx.tick.update({
+      if (nut.like_count < 0) {
+        nut = await tx.nut.update({
           where: { id },
-          data: { heart_count: 0 },
+          data: { like_count: 0 },
         });
       }
 
-      if (hasLikedTick) {
-        await tx.heart.deleteMany({
+      if (hasLikedNut) {
+        await tx.like.deleteMany({
           where: {
-            tick_id: id,
+            nut_id: id,
             user_id: user.id,
           },
         });
       } else {
-        await tx.heart.create({
+        await tx.like.create({
           data: {
-            tick_id: id,
+            nut_id: id,
             user_id: user.id,
           },
         });
       }
-      return { tick, hasLikedTick };
+      return { nut, hasLikedNut };
     });
 
-    res.status(200).json({ count: tick.heart_count, status: !hasLikedTick });
+    res.status(200).json({ count: nut.like_count, status: !hasLikedNut });
   },
 });

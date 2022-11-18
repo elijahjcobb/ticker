@@ -1,5 +1,4 @@
 import { TObject, TStandard } from "@elijahjcobb/typr";
-import { raw } from "@prisma/client/runtime";
 import { createEndpoint } from "../../../api-helpers/create-endpoint";
 import { generateKey } from "../../../api-helpers/generate-key";
 import { verifyUser } from "../../../api-helpers/token";
@@ -16,7 +15,7 @@ export default createEndpoint<FeedItem>({
       })
     );
 
-    const tick = await db.tick.create({
+    const nut = await db.nut.create({
       data: {
         user_id: user.id,
         content,
@@ -26,15 +25,15 @@ export default createEndpoint<FeedItem>({
     res.status(200).json({
       key: generateKey({
         userId: user.id,
-        tickId: tick.id,
-        tickUserId: user.id,
+        nutId: nut.id,
+        nutUserId: user.id,
         type: "tick",
       }),
       event: {
-        type: "tick",
-        id: tick.id,
+        type: "nut",
+        id: nut.id,
         content: null,
-        createdAt: tick.created_at.toUTCString(),
+        createdAt: nut.created_at.toUTCString(),
         user: {
           id: user.id,
           name: user.name,
@@ -43,16 +42,16 @@ export default createEndpoint<FeedItem>({
           followerCount: user.follower_count,
         },
       },
-      tick: {
-        id: tick.id,
-        content: tick.content,
-        heartCount: tick.heart_count,
-        retickCount: tick.retick_count,
-        commentCount: tick.comment_count,
-        hearted: false,
-        reticked: false,
-        createdAt: tick.created_at.toUTCString(),
-        updatedAt: tick.updated_at.toUTCString(),
+      nut: {
+        id: nut.id,
+        content: nut.content,
+        likeCount: nut.like_count,
+        shareCount: nut.share_count,
+        commentCount: nut.comment_count,
+        liked: false,
+        shared: false,
+        createdAt: nut.created_at.toUTCString(),
+        updatedAt: nut.updated_at.toUTCString(),
         user: {
           id: user.id,
           name: user.name,

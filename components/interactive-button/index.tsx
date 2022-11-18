@@ -1,19 +1,19 @@
 import clsx from "clsx";
-import { MouseEvent, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
+import { MouseEvent, PropsWithChildren, useCallback, useMemo, useState } from "react";
 import type { IconType } from "react-icons";
 import { IoHeartOutline, IoHeart, IoChatbubbleOutline } from "react-icons/io5";
 import { HiOutlineSpeakerphone, HiSpeakerphone } from 'react-icons/hi';
 import styles from "./index.module.css";
 import { fetcher } from "../../front-helpers/fetch";
-import type { ResponseHeart } from "../../pages/api/tick/heart";
+import type { ResponseLike } from "../../pages/api/nut/like";
 import { useDebounce } from "../../front-helpers/debounce";
 import { useDependencyEffect } from "../../front-helpers/use-dependency-effect";
 import { AcornIcon } from "../icons/icon";
 
 const COLOR_MAP = {
-	heart: 'pri',
+	like: 'pri',
 	comment: 'pri',
-	retick: 'tri'
+	share: 'tri'
 }
 
 export function GenericButton({
@@ -80,8 +80,8 @@ export function GenericToggleableButton({
 	const Icon = useMemo(() => isToggled ? activeIcon : icon, [isToggled, icon, activeIcon]);
 
 	useDependencyEffect(() => {
-		fetcher<ResponseHeart>({
-			url: `/tick/${type}`,
+		fetcher<ResponseLike>({
+			url: `/nut/${type}`,
 			method: "post",
 			body: { id }
 		}).then(res => {
@@ -111,10 +111,10 @@ interface Props {
 	initialCount: number;
 	initialStatus: boolean;
 	id: string;
-	type: 'retick' | "heart";
+	type: 'share' | "like";
 }
 
-export function HeartButton(props: Props) {
+export function LikeButton(props: Props) {
 	return <GenericToggleableButton
 		icon={IoHeartOutline}
 		activeIcon={IoHeart}
@@ -139,7 +139,7 @@ export function CommentButton({
 	</GenericButton>
 }
 
-export function RetickButton(props: Props) {
+export function ShareButton(props: Props) {
 	return <GenericToggleableButton
 		icon={HiOutlineSpeakerphone}
 		activeIcon={HiSpeakerphone}

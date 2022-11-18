@@ -23,7 +23,7 @@
   height: 100%;
   font-size: 1rem;
   font-family: var(--font-mono);
-  color: var(--color);
+  color: var(--fg);
 }
 
 .field::placeholder,

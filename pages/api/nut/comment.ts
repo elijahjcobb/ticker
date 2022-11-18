@@ -16,13 +16,13 @@ export default createEndpoint({
 
     const comment = await db.comment.create({
       data: {
-        tick_id: id,
+        nut_id: id,
         user_id: user.id,
         content,
       },
     });
 
-    await db.tick.update({
+    await db.nut.update({
       where: { id },
       data: { comment_count: { increment: 1 } },
     });
