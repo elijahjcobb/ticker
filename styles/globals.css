@@ -40,6 +40,7 @@
   --sp6: calc(var(--sp) * 6);
   --sp7: calc(var(--sp) * 7);
   --sp8: calc(var(--sp) * 8);
+  --nav: 96px;
 }
 
 body {
@@ -51,6 +52,10 @@ body {
 
 html {
   font-size: var(--sp2);
+}
+
+a {
+  text-decoration: none;
 }
 
 @media (prefers-color-scheme: dark) {

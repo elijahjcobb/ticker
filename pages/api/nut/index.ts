@@ -3,9 +3,9 @@ import { createEndpoint } from "../../../api-helpers/create-endpoint";
 import { generateKey } from "../../../api-helpers/generate-key";
 import { verifyUser } from "../../../api-helpers/token";
 import { verifyBody } from "../../../api-helpers/type-check";
-import type { FeedItem } from "../user/feed";
+import type { ResponseFeedItem } from "../user/feed";
 
-export default createEndpoint<FeedItem>({
+export default createEndpoint<ResponseFeedItem>({
   POST: async ({ req, db, res }) => {
     const user = await verifyUser(req);
     const { content } = verifyBody(

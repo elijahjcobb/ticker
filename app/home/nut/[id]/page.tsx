@@ -1,3 +1,3 @@
 export default function Page() {
-	return <span>tick</span>
+	return <span>nut</span>
 }

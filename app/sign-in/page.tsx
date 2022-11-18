@@ -1,14 +1,14 @@
+"use client";
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
-import { IoPerson, IoLockClosed, IoAt } from "react-icons/io5";
-import { APIError } from "../api-helpers/api-error";
-import { AuthPage } from "../components/auth";
-import { Field } from "../components/field";
-import { fetcher } from "../front-helpers/fetch";
+import { IoLockClosed, IoAt } from "react-icons/io5";
+import { APIError } from "../../api-helpers/api-error";
+import { AuthPage } from "../../components/auth";
+import { Field } from "../../components/field";
+import { fetcher } from "../../front-helpers/fetch";
 
 export default function Page() {
 
-	const [name, setName] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
@@ -20,10 +20,10 @@ export default function Page() {
 		setIsLoading(true);
 		setErrorMessage(undefined);
 		fetcher({
-			url: '/user/sign-up',
+			url: `/user/sign-in`,
 			method: 'post',
 			body: {
-				username, password, name
+				username, password
 			}
 		}).then(() => {
 			router.push("/");
@@ -34,20 +34,14 @@ export default function Page() {
 		}).finally(() => {
 			setIsLoading(false);
 		})
-	}, [username, password, router, name]);
+	}, [username, password, router]);
 
 	return <AuthPage
-		type="up"
+		type="in"
 		onSubmit={handleSubmit}
 		isLoading={isLoading}
 		errorMessage={errorMessage}
 	>
-		<Field
-			icon={IoPerson}
-			placeholder='name'
-			value={name}
-			onChange={setName}
-		/>
 		<Field
 			icon={IoAt}
 			placeholder='username'

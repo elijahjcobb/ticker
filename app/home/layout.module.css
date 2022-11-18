@@ -1,24 +1,31 @@
 .main {
   display: flex;
+  flex-direction: column;
   width: 100vw;
+  min-height: 100%;
   align-items: center;
   justify-content: center;
+  background: var(--acc-1);
 }
 
 .container {
   width: 100%;
-  margin-top: var(--sp);
   max-width: 480px;
+  background: var(--bg);
+  border: solid 1px var(--acc-2);
+  margin: var(--sp4) 0;
+  border-radius: var(--sp2);
+  overflow: hidden;
 }
 
 .nav {
   padding: var(--sp2);
   position: sticky;
-  top: var(--sp);
+  top: 0;
   background: var(--bg);
-  border-radius: var(--sp2);
-  box-shadow: 0 0 var(--sp2) var(--acc-2);
   z-index: 5;
+  height: var(--nav);
+  width: 100%;
 }
 
 .profile {
@@ -53,10 +60,4 @@
   font-family: var(--font-title);
   font-size: 2rem;
   color: var(--pri);
-}
-
-.ticks {
-  display: flex;
-  flex-direction: column;
-  margin-top: var(--sp2);
 }

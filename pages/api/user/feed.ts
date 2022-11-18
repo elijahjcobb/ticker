@@ -30,7 +30,7 @@ export interface RawRow {
   has_shared: null | number;
 }
 
-export interface FeedItem {
+export interface ResponseFeedItem {
   key: string;
   event: {
     type: Type;
@@ -65,7 +65,7 @@ export interface FeedItem {
   };
 }
 
-export default createEndpoint<FeedItem[]>({
+export default createEndpoint<ResponseFeedItem[]>({
   GET: async ({ req, res, db }) => {
     const user = await verifyUser(req);
     const feed = (await db.$queryRawUnsafe(`SELECT *

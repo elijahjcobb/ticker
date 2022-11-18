@@ -1,12 +1,12 @@
 .container {
   padding: var(--sp3);
-  border: solid 2px var(--acc-1);
-  border-bottom: none;
+  border-top: solid 1px var(--acc-2);
   text-decoration: none;
   transition: 125ms ease-in-out;
   display: flex;
   flex-direction: column;
   gap: var(--sp3);
+  background: var(--bg);
 }
 
 .event {

@@ -1,11 +1,12 @@
-import { useMemo } from "react";
+import { MouseEvent, useCallback, useMemo } from "react";
 import { LikeButton, ShareButton } from "../interactive-button";
 import { formatDistanceToNow } from 'date-fns'
 import styles from "./index.module.css";
 import { Avatar } from "../avatar";
-import type { FeedItem } from "../../pages/api/user/feed";
+import type { ResponseFeedItem } from "../../pages/api/user/feed";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { IoChatbubbleOutline, IoHeartOutline } from "react-icons/io5";
+import Link from "next/link";
 
 function formatDateString(dateString: string): string {
 	const date = new Date(dateString);
@@ -16,10 +17,10 @@ function formatDateString(dateString: string): string {
 	return `${value} ago`
 }
 
-export function Tick({
+export function Nut({
 	nut,
 	event
-}: FeedItem) {
+}: ResponseFeedItem) {
 
 	const { user,
 		createdAt: createdAtRaw,
@@ -58,7 +59,7 @@ export function Tick({
 		}
 	}, [event.type]);
 
-	return <div className={styles.container}>
+	return <Link href={`/home/nut/${nut.id}`} className={styles.container}>
 		{event.type === 'nut' ? null : <div className={styles.event}>
 			<EventIcon className={styles.eventIcon} />
 			<span>@{event.user.username}</span>
@@ -78,11 +79,11 @@ export function Tick({
 					<span>{createdAt}</span>
 				</div>
 				<p>{content}</p>
-				<div className={styles.buttons}>
+				<div className={styles.buttons} >
 					<LikeButton id={id} type='like' initialStatus={liked} initialCount={likeCount} />
 					<ShareButton id={id} type='share' initialStatus={shared} initialCount={shareCount} />
 				</div>
 			</div>
 		</div>
-	</div>
+	</Link>
 }

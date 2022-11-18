@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  background: var(--bg);
+  border-bottom: solid 1px var(--acc-2);
+  position: relative;
+}
+
+.ghost {
+  position: absolute;
+  width: 25%;
+  --col: var(--acc-1);
+  background: var(--col);
+  box-shadow: 0 0 var(--sp4) var(--col);
+  filter: blur(var(--sp2));
+  animation: move 2s ease-in-out 1s infinite forwards;
+}
+
+@keyframes move {
+  from {
+    left: 0;
+  }
+  50% {
+    left: 75%;
+  }
+  to {
+    left: 0;
+  }
+}
