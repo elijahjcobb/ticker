@@ -2,10 +2,10 @@
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
 import { IoPerson, IoLockClosed, IoAt } from "react-icons/io5";
-import { APIError } from "../../api-helpers/api-error";
-import { AuthPage } from "../../components/auth";
-import { Field } from "../../components/field";
-import { fetcher } from "../../front-helpers/fetch";
+import { APIError } from "../api-helpers/api-error";
+import { AuthPage } from "../components/auth";
+import { Field } from "../components/field";
+import { fetcher } from "../front-helpers/fetch";
 
 export default function Page() {
 

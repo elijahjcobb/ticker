@@ -5,5 +5,5 @@ export default function Page() {
 
 	const router = useRouter();
 
-	return <Shell>user {router.query.id}</Shell>
+	return <Shell>nut {router.query.id}</Shell>
 }
