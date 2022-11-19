@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { LikeButton, ShareButton } from "../interactable-button";
 import { formatDistanceToNow } from 'date-fns'
 import styles from "./index.module.css";
@@ -6,6 +6,7 @@ import { Avatar } from "../avatar";
 import type { ResponseFeedItem } from "../../pages/api/user/feed";
 import { BsMegaphoneFill } from "react-icons/bs";
 import { IoChatbubbleOutline, IoHeartOutline } from "react-icons/io5";
+import { useRouter } from "next/router";
 
 function formatDateString(dateString: string): string {
 	const date = new Date(dateString);
@@ -58,7 +59,13 @@ export function Nut({
 		}
 	}, [event.type]);
 
-	return <div className={styles.container}>
+	const router = useRouter();
+
+	const handleClick = useCallback(() => {
+		router.push(`/home/nut/${id}`)
+	}, [router, id]);
+
+	return <div onClick={handleClick} className={styles.container}>
 		{event.type === 'nut' ? null : <div className={styles.event}>
 			<EventIcon className={styles.eventIcon} />
 			<span>@{event.user.username}</span>

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useCallback, useMemo, useState } from "react";
+import { MouseEvent, useCallback, useMemo, useState } from "react";
 import { fetcher } from "../../front-helpers/fetch";
 import type { ResponseLike } from "../../pages/api/nut/like";
 import { AcornIcon } from "../icons/icon";
@@ -23,7 +23,10 @@ function useInteractableBinaryButton({
 	const [status, setStatus] = useState(initialStatus);
 	const [count, setCount] = useState(initialCount);
 
-	const handleClick = useCallback(() => {
+	const handleClick = useCallback((ev: MouseEvent) => {
+
+		ev.stopPropagation();
+
 		const pre = { status, count };
 
 		setCount(count + (status ? -1 : 1));

@@ -1,3 +1,9 @@
+import { useRouter } from "next/router";
+import { Shell } from "../../../../components/shell";
+
 export default function Page() {
-	return <span>nut</span>
+
+	const router = useRouter();
+
+	return <Shell>{router.query.id}</Shell>
 }
