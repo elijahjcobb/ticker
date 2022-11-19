@@ -33,6 +33,7 @@ export function GenericButton({
 
 	const handleClick = useCallback((ev: MouseEvent<HTMLButtonElement>) => {
 		ev.stopPropagation();
+		ev.preventDefault();
 		onClick();
 	}, [onClick]);
 
@@ -103,7 +104,7 @@ export function GenericToggleableButton({
 		type={type}
 		toggled={isToggled}
 	>
-		{useAcorn ? (<AcornIcon size={22} enabled={isToggled} />) : (<Icon size={22} />)}
+		{useAcorn ? (<AcornIcon className={styles.acorn} size={22} enabled={isToggled} />) : (<Icon size={22} />)}
 	</GenericButton>
 }
 
