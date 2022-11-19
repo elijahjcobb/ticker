@@ -14,7 +14,7 @@
   --acc-1: #fafafa;
   --acc-2: #eaeaea;
   --acc-3: #ddd;
-  --nut: var(--acc-3);
+  --nut: #333;
   --acc-4: #bbb;
   --acc-5: #777;
   --acc-6: #444;
@@ -49,10 +49,14 @@ body {
   color: var(--fg);
   font-family: var(--font);
   font-size: 16px;
+  height: 100%;
+  overflow: auto;
 }
 
 html {
   font-size: var(--sp2);
+  overflow: hidden;
+  height: 100%;
 }
 
 a {

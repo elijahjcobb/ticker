@@ -114,6 +114,7 @@ FROM   (SELECT 'share'       AS type,
          ON share_status.rt_id=raw_data.nut_id
 ORDER  BY created_at DESC
 LIMIT  300;`)) as RawRow[];
+
     res.json(
       feed.map((raw) => ({
         key: generateKey({

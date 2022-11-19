@@ -1,4 +1,3 @@
-"use client";
 import styles from "./index.module.css";
 import { useCallback, useEffect, useState } from "react";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -7,7 +6,8 @@ import { Composer } from "../../components/composer";
 import { Nut } from "../../components/nut";
 import { Ghost } from "../../components/ghost";
 import { useFetch } from "../../front-helpers/fetch";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
+import { Shell } from "../shell";
 
 
 const GHOSTS: number[] = new Array(10);
@@ -35,15 +35,16 @@ export default function HomePage() {
 		if (data) setFeed(data);
 	}, [data]);
 
-	if (!data) return <>
-		<Ghost height={380} />
-		{GHOSTS.map(v => <Ghost key={v} />)}
-	</>
 
-	return <>
-		<Composer onCreateTick={handleAddTick} />
-		<div className={styles.ticks} ref={parent}>
-			{feed.map(feedItem => <Nut {...feedItem} key={feedItem.key} />)}
-		</div>
-	</>
+	return <Shell>
+		{data ? <>
+			<Composer onCreateTick={handleAddTick} />
+			<div className={styles.ticks} ref={parent}>
+				{feed.map(feedItem => <Nut {...feedItem} key={feedItem.key} />)}
+			</div>
+		</> : <>
+			<Ghost height={380} />
+			{GHOSTS.map(v => <Ghost key={v} />)}
+		</>}
+	</Shell>
 }

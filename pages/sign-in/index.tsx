@@ -1,4 +1,3 @@
-"use client";
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
 import { IoLockClosed, IoAt } from "react-icons/io5";

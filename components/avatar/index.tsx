@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useMemo } from "react";
 import styles from "./index.module.css";
 
@@ -34,7 +33,7 @@ function generateColors(id: string): string[] {
 export function Avatar({
 	size = 48,
 	name,
-	id
+	id,
 }: {
 	size?: number;
 	name: string;
@@ -50,8 +49,7 @@ export function Avatar({
 		return nameSegments.map(v => v.charAt(0)).join("");
 	}, [name]);
 
-	return <Link
-		href={`/user/${id}`}
+	return <div
 		style={{
 			width: size,
 			height: size,
@@ -60,5 +58,5 @@ export function Avatar({
 		}}
 		className={styles.avatar}>
 		{initials}
-	</Link>
+	</div>
 }
