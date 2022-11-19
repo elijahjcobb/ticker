@@ -12,3 +12,12 @@
   outline: none;
   text-decoration: none;
 }
+
+.clickable {
+  transition: 125ms ease-in-out;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  transform: scale(1.1);
+}

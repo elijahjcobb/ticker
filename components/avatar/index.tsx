@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import clsx from "clsx";
+import { MouseEvent, useMemo } from "react";
 import styles from "./index.module.css";
 
 function generateCodeForId(id: string, rand: number, max: number, step: number): number {
@@ -34,10 +35,12 @@ export function Avatar({
 	size = 48,
 	name,
 	id,
+	onClick
 }: {
 	size?: number;
 	name: string;
 	id: string;
+	onClick?: (ev: MouseEvent) => void;
 }) {
 
 	const colors = useMemo(() => {
@@ -56,7 +59,8 @@ export function Avatar({
 			fontSize: size / 2,
 			background: `linear-gradient(${colors.join(", ")})`
 		}}
-		className={styles.avatar}>
+		onClick={onClick}
+		className={clsx(styles.avatar, onClick && styles.clickable)}>
 		{initials}
 	</div>
 }

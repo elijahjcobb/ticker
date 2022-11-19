@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { MouseEvent, useCallback, useMemo } from "react";
 import { LikeButton, ShareButton } from "../interactable-button";
 import { formatDistanceToNow } from 'date-fns'
 import styles from "./index.module.css";
@@ -61,11 +61,16 @@ export function Nut({
 
 	const router = useRouter();
 
-	const handleClick = useCallback(() => {
-		router.push(`/home/nut/${id}`)
+	const handleMainClick = useCallback(() => {
+		router.push(`/nut/${id}`)
 	}, [router, id]);
 
-	return <div onClick={handleClick} className={styles.container}>
+	const handleAvatarClick = useCallback((ev: MouseEvent) => {
+		ev.stopPropagation();
+		router.push(`/${nut.user.id}`)
+	}, [router, nut]);
+
+	return <div onClick={handleMainClick} className={styles.container}>
 		{event.type === 'nut' ? null : <div className={styles.event}>
 			<EventIcon className={styles.eventIcon} />
 			<span>@{event.user.username}</span>
@@ -75,7 +80,7 @@ export function Nut({
 		</div>}
 		<div
 			className={styles.tick}>
-			<Avatar name={user.name} id={user.id} />
+			<Avatar onClick={handleAvatarClick} name={user.name} id={user.id} />
 			<div className={styles.content}>
 				<div className={styles.top}>
 					<span className={styles.name}>{user.name}</span>
